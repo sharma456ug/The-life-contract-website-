@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Contract | Joyce & Sharma</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff6b6b;
+            --light: #f8f9fa;
+            --dark: #4a4a4a;
+            --text: #7f8c8d;
+            --success: #4ecdc4;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--light);
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 900px;
+            overflow: hidden;
+            position: relative;
+            min-height: 650px;
+            color: var(--dark);
+        }
+        
+        .warning-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .warning-box {
+            background: var(--dark);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            border: 2px solid var(--accent);
+            color: white;
+        }
+        
+        .warning-box h2 {
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .warning-box p {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .warning-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .message {
+            text-align: center;
+            font-size: 1.1rem;
+            margin: 10px 0 20px;
+            color: var(--light);
+        }
+        
+        .page {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s;
+            min-height: 400px;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Login Page */
+        .login-form {
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 25px;
+            background: var(--light);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .error-message {
+            color: var(--accent);
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        /* Agreement Pages */
+        .agreement-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .agreement-section {
+            margin-bottom: 25px;
+        }
+        
+        .agreement-section h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+        }
+        
+        .agreement-clause {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .agreement-clause:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        /* Letter Page */
+        .letter-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-group textarea:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+        
+        .word-count {
+            text-align: right;
+            color: var(--text);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        /* Completion Page */
+        .completion-message {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .completion-message i {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--light);
+            color: var(--dark);
+            font-size: 1rem;
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .signature {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            color: var(--primary);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: inline-block;
+            margin: 10px 5px;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .security-notice {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .agreement-container {
+                max-height: 300px;
+            }
+        }
+        
+        .heart {
+            color: var(--accent);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: #ddd;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Warning Overlay -->
+    <div class="warning-overlay" id="warning-overlay">
+        <div class="warning-box">
+            <h2><i class="fas fa-exclamation-triangle"></i> IMPORTANT NOTICE</h2>
+            <p>This is a special agreement between best friends Joyce and Sharma. By continuing, you agree to a serious commitment that includes complete honesty, a blood bond, and lifelong loyalty to each other.</p>
+            <p>This agreement will include close friendship activities like: intimate moments, shared experiences, sleepovers, and a special blood bond ceremony.</p>
+            <p>Are you sure you want to continue?</p>
+            <div class="warning-buttons">
+                <button class="btn" id="accept-warning">I Accept</button>
+                <button class="btn btn-outline" id="reject-warning">Leave</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div class="page active" id="login-page">
+            <header>
+                <h1>Special Friendship Agreement</h1>
+                <p class="message">Joyce <span class="heart">❤</span> Sharma's Special Bond</p>
+            </header>
+            
+            <div class="login-form">
+                <h2 style="text-align: center; color: var(--dark);">Verify Your Identity</h2>
+                <div class="form-group">
+                    <label for="username">Your Name</label>
+                    <input type="text" id="username" placeholder="Enter your name" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="password">Secret Code</label>
+                    <input type="password" id="password" placeholder="Enter the secret code" autocomplete="off">
+                </div>
+                <button class="login-btn" id="login-btn">Verify Identity</button>
+                <p class="error-message" id="error-message">Verification failed. Please try again.</p>
+                
+                <div class="security-notice">
+                    <p><i class="fas fa-shield-alt"></i> Your information is not stored on this device.</p>
+                </div>
+            </div>
+            
+            <footer>
+                <p>This agreement represents a special bond between two best friends</p>
+                <p class="signature">Friendship Commitment</p>
+            </footer>
+        </div>
+        
+        <!-- Rules Page -->
+        <div class="page" id="rules-page">
+            <header>
+                <h1>Our Friendship Agreement</h1>
+                <p class="message">Joyce <span class="heart">❤</span> Sharma's Special Bond</p>
+            </header>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 25%;"></div>
+            </div>
+            <div class="progress-text">Step 1 of 4: Review Agreement Terms</div>
+            
+            <div class="agreement-container">
+                <div class="agreement-section">
+                    <h3>Closeness and Boundaries</h3>
+                    <div class="agreement-clause">We agree to be physically close as best friends, always respecting each other's comfort levels.</div>
+                    <div class="agreement-clause">We will always talk openly about what we want and what we're comfortable with.</div>
+                    <div class="agreement-clause">We will make time for sleepovers and private moments to strengthen our connection.</div>
+                </div>
+                
+                <div class="agreement-section">
+                    <h3>Honesty and Openness</h3>
+                    <div class="agreement-clause">We promise to always be completely honest with each other.</div>
+                    <div class="agreement-clause">We will share our true feelings and thoughts without being afraid.</div>
+                    <div class="agreement-clause">We will have no secrets - phones and accounts will be open to each other.</div>
+                </div>
+                
+                <div class="agreement-section">
+                    <h3>Social Life Together</h3>
+                    <div class="agreement-clause">We will always support each other in social situations.</div>
+                    <div class="agreement-clause">We will prioritize doing things together like parties, trips, and celebrations.</div>
+                    <div class="agreement-clause">We will create special traditions that make our friendship stronger.</div>
+                </div>
+                
+                <div class="agreement-section">
+                    <h3>Blood Bond Ceremony</h3>
+                    <div class="agreement-clause">We agree to do a blood bond ceremony to show our eternal connection.</div>
+                    <div class="agreement-clause">This physical bond will represent our lifelong commitment to each other.</div>
+                    <div class="agreement-clause">We will remember this ceremony as a special moment in our friendship.</div>
+                </div>
+                
+                <div class="agreement-section">
+                    <h3>Lifelong Commitment</h3>
+                    <div class="agreement-clause">This agreement is for life, with no way to cancel it.</div>
+                    <div class="agreement-clause">We will celebrate our friendship every year on this date.</div>
+                    <div class="agreement-clause">Any problems will be solved by talking, not by ending our friendship.</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" id="agree-rules">I Accept These Terms</button>
+            </div>
+            
+            <footer>
+                <p>This agreement represents a special bond between two best friends</p>
+                <p class="signature">Friendship Commitment</p>
+            </footer>
+        </div>
+        
+        <!-- Promises Page -->
+        <div class="page" id="promises-page">
+            <header>
+                <h1>Our Special Promises</h1>
+                <p class="message">Joyce <span class="heart">❤</span> Sharma's Special Bond</p>
+            </header>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill-promises" style="width: 50%;"></div>
+            </div>
+            <div class="progress-text">Step 2 of 4: Make Promises</div>
+            
+            <div class="agreement-container">
+                <div class="agreement-section">
+                    <h3>Promise of Protection</h3>
+                    <div class="agreement-clause">I will always protect you from harm, both physical and emotional.</div>
+                    <div class="agreement-clause">I will be your safe place when you're sad and your biggest cheerleader when you're happy.</div>
+                    <div class="agreement-clause">Your secrets will be safe with me, and I will never break your trust.</div>
+                </div>
+                
+                <div class="agreement-section">
+                    <h3>Promise of Loyalty</h3>
+                    <div class="agreement-clause">I will put our friendship above all other friendships.</div>
+                    <div class="agreement-clause">I will never give you reason to doubt my commitment to our friendship.</div>
+                    <div class="agreement-clause">Our intimate moments will stay private between us.</div>
+                </div>
+                
+                <div class="agreement-section">
+                    <h3>Promise of Closeness</h3>
+                    <div class="agreement-clause">I will be open to physical closeness without embarrassment.</div>
+                    <div class="agreement-clause">I will always tell you my boundaries and respect yours.</div>
+                    <div class="agreement-clause">Our physical relationship will be based on mutual trust and respect.</div>
+                </div>
+                
+                <div class="agreement-section">
+                    <h3>Promise of Forever Friendship</h3>
+                    <div class="agreement-clause">This friendship is for life, with no way to end it.</div>
+                    <div class="agreement-clause">Our blood bond will show our permanent connection.</div>
+                    <div class="agreement-clause">Any issues will be worked through together.</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" id="agree-promises">I Make These Promises</button>
+            </div>
+            
+            <footer>
+                <p>This agreement represents a special bond between two best friends</p>
+                <p class="signature">Friendship Commitment</p>
+            </footer>
+        </div>
+        
+        <!-- Letter Page -->
+        <div class="page" id="letter-page">
+            <header>
+                <h1>Personal Commitment Letter</h1>
+                <p class="message">Joyce <span class="heart">❤</span> Sharma's Special Bond</p>
+            </header>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill-letter" style="width: 75%;"></div>
+            </div>
+            <div class="progress-text">Step 3 of 4: Write Personal Letter</div>
+            
+            <div class="letter-form">
+                <div class="form-group">
+                    <label for="personal-letter">Write your personal commitment letter to Sharma (about 50 words)</label>
+                    <textarea id="personal-letter" placeholder="I want to be your best friend because..."></textarea>
+                    <div class="word-count">Word count: <span id="word-count">0</span>/50</div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" id="submit-letter">Submit Letter</button>
+                </div>
+            </div>
+            
+            <footer>
+                <p>This agreement represents a special bond between two best friends</p>
+                <p class="signature">Friendship Commitment</p>
+            </footer>
+        </div>
+        
+        <!-- Submission Page -->
+        <div class="page" id="submission-page">
+            <header>
+                <h1>Finalize Your Friendship Agreement</h1>
+                <p class="message">Joyce <span class="heart">❤</span> Sharma's Special Bond</p>
+            </header>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill-submit" style="width: 100%;"></div>
+            </div>
+            <div class="progress-text">Step 4 of 4: Finalize Commitment</div>
+            
+            <div class="completion-message">
+                <h3>Ready to Make It Official</h3>
+                <p>By clicking the button below, you agree to all terms and promises, and your personal letter will be sent to Sharma.</p>
+                <p>This will make our special friendship agreement official with a blood bond commitment.</p>
+                
+                <div style="margin: 30px 0;">
+                    <button class="btn" id="finalize-btn">Finalize Agreement</button>
+                </div>
+                
+                <div class="security-notice">
+                    <p><i class="fas fa-info-circle"></i> Your commitment will be sent via WhatsApp to Sharma</p>
+                </div>
+            </div>
+            
+            <footer>
+                <p>This agreement represents a special bond between two best friends</p>
+                <p class="signature">Friendship Commitment</p>
+            </footer>
+        </div>
+        
+        <!-- Completion Page -->
+        <div class="page" id="completion-page">
+            <header>
+                <h1>Friendship Agreement Complete</h1>
+                <p class="message">Joyce <span class="heart">❤</span> Sharma's Special Bond</p>
+            </header>
+            
+            <div class="completion-message">
+                <i class="fas fa-heart"></i>
+                <h2>Agreement Successful</h2>
+                <p>Your special commitment to Sharma has been recorded and sent.</p>
+                <p>Your blood bond ceremony will now represent your lifelong friendship.</p>
+                
+                <div style="margin: 30px 0;">
+                    <button class="btn" id="new-commitment">Create New Agreement</button>
+                </div>
+            </div>
+            
+            <footer>
+                <p>This agreement represents a special bond between two best friends</p>
+                <p class="signature">Friendship Commitment</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const warningOverlay = document.getElementById('warning-overlay');
+        const acceptWarning = document.getElementById('accept-warning');
+        const rejectWarning = document.getElementById('reject-warning');
+        const loginBtn = document.getElementById('login-btn');
+        const errorMessage = document.getElementById('error-message');
+        const agreeRulesBtn = document.getElementById('agree-rules');
+        const agreePromisesBtn = document.getElementById('agree-promises');
+        const submitLetterBtn = document.getElementById('submit-letter');
+        const finalizeBtn = document.getElementById('finalize-btn');
+        const newCommitmentBtn = document.getElementById('new-commitment');
+        const personalLetter = document.getElementById('personal-letter');
+        const wordCountElement = document.getElementById('word-count');
+        
+        // State variables
+        let currentUser = '';
+        let agreedToRules = false;
+        let agreedToPromises = false;
+        let letterSubmitted = false;
+        
+        // Warning screen
+        rejectWarning.addEventListener('click', function() {
+            alert('You have chosen not to continue. This page will now close.');
+            window.close();
+        });
+        
+        acceptWarning.addEventListener('click', function() {
+            warningOverlay.style.display = 'none';
+        });
+        
+        // Login functionality
+        loginBtn.addEventListener('click', function() {
+            const username = document.getElementById('username').value.trim().toLowerCase();
+            const password = document.getElementById('password').value;
+            
+            if ((username === 'joyce' && password === '09112005') || 
+                (username === 'sharma' && password === '09112005')) {
+                currentUser = username;
+                showPage('rules-page');
+                
+                // Clear password field for security
+                document.getElementById('password').value = '';
+            } else {
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        // Allow Enter key to submit login form
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+        
+        // Agreement buttons
+        agreeRulesBtn.addEventListener('click', function() {
+            agreedToRules = true;
+            showPage('promises-page');
+        });
+        
+        agreePromisesBtn.addEventListener('click', function() {
+            agreedToPromises = true;
+            showPage('letter-page');
+        });
+        
+        // Word count for letter
+        personalLetter.addEventListener('input', function() {
+            const text = this.value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            wordCountElement.textContent = words;
+            
+            // Color code based on word count
+            if (words < 40) {
+                wordCountElement.style.color = '#ff6b6b';
+            } else if (words <= 50) {
+                wordCountElement.style.color = '#4ecdc4';
+            } else {
+                wordCountElement.style.color = '#ff6b6b';
+            }
+        });
+        
+        // Submit letter
+        submitLetterBtn.addEventListener('click', function() {
+            const letter = personalLetter.value.trim();
+            const wordCount = letter ? letter.split(/\s+/).length : 0;
+            
+            if (wordCount < 40) {
+                alert('Please write at least 40 words for your commitment letter.');
+                return;
+            }
+            
+            if (wordCount > 60) {
+                alert('Please keep your letter to a maximum of 60 words.');
+                return;
+            }
+            
+            letterSubmitted = true;
+            showPage('submission-page');
+        });
+        
+        // Finalize commitment
+        finalizeBtn.addEventListener('click', function() {
+            if (!agreedToRules || !agreedToPromises || !letterSubmitted) {
+                alert('Please complete all sections before finalizing your commitment.');
+                return;
+            }
+            
+            const letter = personalLetter.value.trim();
+            const message = `*Friendship Agreement from Joyce to Sharma*%0A%0A` +
+                           `I have agreed to all terms and promises of our special friendship agreement.%0A%0A` +
+                           `*My Personal Commitment:*%0A` +
+                           `${encodeURIComponent(letter)}%0A%0A` +
+                           `Our blood bond ceremony will now symbolize our eternal friendship.`;
+            
+            // Open WhatsApp with the pre-filled message
+            window.open(`https://wa.me/256707425350?text=${message}`, '_blank');
+            
+            // Show completion page
+            showPage('completion-page');
+        });
+        
+        // New commitment
+        newCommitmentBtn.addEventListener('click', function() {
+            // Reset everything
+            agreedToRules = false;
+            agreedToPromises = false;
+            letterSubmitted = false;
+            personalLetter.value = '';
+            wordCountElement.textContent = '0';
+            
+            // Go back to login page
+            showPage('login-page');
+            document.getElementById('username').value = '';
+        });
+        
+        // Show specific page
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
